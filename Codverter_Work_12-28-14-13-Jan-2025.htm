@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project & Learning Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #4CAF50;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .entry {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fdfdfd;
+        }
+        .entry h3 {
+            margin: 0;
+            color: #4CAF50;
+        }
+        .entry p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Project & Learning Tracker</h1>
+    </header>
+    <main>
+        <h2>Add a New Entry</h2>
+        <form id="entryForm">
+            <div class="form-group">
+                <label for="title">Project/Topic Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter the title" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="description">What You Learned</label>
+                <textarea id="description" name="description" placeholder="Describe what you learned or accomplished..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="red" style="background-color: red;">Category 1</option>
+                    <option value="blue" style="background-color: blue;">Category 2</option>
+                    <option value="green" style="background-color: green;">Category 3</option>
+                    <option value="yellow" style="background-color: yellow;">Category 4</option>
+                    <option value="purple" style="background-color: purple;">Category 5</option>
+                    <option value="orange" style="background-color: orange;">Category 6</option>
+                    <option value="pink" style="background-color: pink;">Category 7</option>
+                    <option value="gray" style="background-color: gray;">Category 8</option>
+                    <option value="brown" style="background-color: brown;">Category 9</option>
+                    <option value="cyan" style="background-color: cyan;">Category 10</option>
+                </select>
+            </div>
+            <button type="submit">Add Entry</button>
+        </form>
+
+        <h2>Your Entries</h2>
+        <div id="entries"></div>
+    </main>
+
+    <script>
+        const form = document.getElementById('entryForm');
+        const entriesDiv = document.getElementById('entries');
+
+        // Load saved entries from localStorage
+        window.onload = () => {
+            const savedEntries = JSON.parse(localStorage.getItem('entries')) || [];
+            savedEntries.forEach(entry => displayEntry(entry));
+        };
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            // Get form values
+            const title = document.getElementById('title').value;
+            const date = document.getElementById('date').value;
+            const description = document.getElementById('description').value;
+            const category = document.getElementById('category').value;
+
+            // Create an entry object
+            const entry = { title, date, description, category };
+
+            // Save the entry to localStorage
+            const entries = JSON.parse(localStorage.getItem('entries')) || [];
+            entries.push(entry);
+            localStorage.setItem('entries', JSON.stringify(entries));
+
+            // Display the entry on the page
+            displayEntry(entry);
+
+            // Clear the form
+            form.reset();
+        });
+
+        function displayEntry(entry) {
+            const entryDiv = document.createElement('div');
+            entryDiv.classList.add('entry');
+            entryDiv.style.borderLeft = `10px solid ${entry.category}`;
+            entryDiv.innerHTML = `
+                <h3>${entry.title}</h3>
+                <p><strong>Date:</strong> ${entry.date}</p>
+                <p>${entry.description}</p>
+            `;
+            entriesDiv.appendChild(entryDiv);
+        }
+    </script>
+</body>
+</html>
